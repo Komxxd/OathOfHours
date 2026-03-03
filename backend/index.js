@@ -24,6 +24,15 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/', limiter);
 
+// Health check
+app.get('/api/health', (req, res) => {
+    res.json({
+        status: 'alive',
+        timestamp: new Date().toISOString(),
+        env: process.env.NODE_ENV
+    });
+});
+
 // Enforce JWT-based session verification for all API routes
 app.use('/api', verifySession);
 
