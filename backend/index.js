@@ -24,6 +24,11 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/', limiter);
 
+// Root greeting
+app.get('/', (req, res) => {
+    res.send('The Oath of Hours resonates within this chamber. Seek the /api/health to confirm your alignment.');
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
     res.json({
