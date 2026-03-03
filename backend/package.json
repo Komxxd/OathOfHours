@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
-    "build": "prisma generate",
+    "postinstall": "prisma generate",
+    "build": "echo 'Building...'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
