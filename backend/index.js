@@ -39,7 +39,12 @@ app.use('/api', verifySession);
 app.use('/api/activities', activitiesRouter);
 app.use('/api/sessions', sessionsRouter);
 
+// Export the app for Vercel / serverless
+export default app;
+
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-    console.log(`Server is resonating on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server is resonating on port ${PORT}`);
+    });
+}
