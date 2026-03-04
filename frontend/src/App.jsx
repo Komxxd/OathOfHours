@@ -12,13 +12,29 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    authClient.getSession().then((result) => {
-      if (result.data?.session && result.data?.user) {
-        setSession(result.data.session);
-        setUser(result.data.user);
+    const checkSession = async () => {
+      try {
+        const result = await authClient.getSession();
+        if (result.data?.session && result.data?.user) {
+          setSession(result.data.session);
+          setUser(result.data.user);
+        } else {
+          setSession(null);
+          setUser(null);
+        }
+      } catch (err) {
+        console.error("Session sync failed:", err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    });
+    };
+
+    checkSession();
+
+    // AUTO-REFRESH: Keep the soul synchronized every 10 minutes
+    // This prevents the short JWT expiry from ever interrupting your ritual while the tab is open.
+    const refreshInterval = setInterval(checkSession, 10 * 60 * 1000);
+    return () => clearInterval(refreshInterval);
   }, []);
 
   if (loading) {
